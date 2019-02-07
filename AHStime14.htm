@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<style>
+p{font-family:Verdana;}
+</style>
+<body>
+
+
+<p id="theDay"></p>  
+
+<p id="example"></p>
+  
+<p>At AHS, </p>
+<p id="theAHSPeriod"></p>
+
+<p id="BoyCurrentClass"></p>
+
+<p id="GirlCurrentClass"></p>
+
+<script>
+var display=setInterval(function(){Time()},0);
+
+function Time()
+{
+var date=new Date();
+var time=date.toLocaleTimeString();
+var min=date.getMinutes();
+var hrs=date.getHours();
+if(hrs == '0') {hrs = 24};
+var current_time = hrs+"."+min;
+document.getElementById("example").innerHTML=time;
+}
+</script>
+
+<script>
+var display=setInterval(function(){whereAreThey()},1500);
+
+var monday_schedule = new Map([
+["First Period", [8.10, 9.1, "Gov/Econ", "English"]],
+["Passing Period1", [9.2, 9.5, "Passing Period", "Passing Period"]],
+["Second Period", [9.6, 9.57, "Supp. Lab", "Bio"]],
+["Passing Period", [9.58, 10.1, "Passing Period", "Passing Period"]],
+["Third Period", [10.2, 10.53, "Supp. Lab", "IHS"]],
+["Break", [10.54, 11.7, "Break", "Break"]],
+["Fourth Period", [11.8, 11.59, "Art", "Math"]],
+["Passing Period2", [12.0, 12.3, "Passing Period", "Passing Period"]],
+["Fifth Period", [12.4, 12.55, "Science", "Mandarin"]],
+["Lunch", [12.55, 13.44, "Done for the day", "Lunch"]],
+["Sixth Period", [13.45, 14.40, "Done for the day", "No Class"]],
+["Seventh Period", [14.41, 15.32, "Done for the day", "PE"]]
+]);
+
+var tuesThur_schedule = new Map([
+["First Period", [8.10, 9.44, "Gov/Econ", "English"]],
+["Passing Period", [9.45, 9.48, "Passing Period", "Passing Period"]],
+["Third Period", [9.49, 11.23, "Supp. Lab", "IHS"]],
+["Break", [11.24, 11.37, "Break", "Break"]],
+["Fifth Period", [11.38, 13.12, "Science", "Mandarin"]],
+["Lunch", [13.13, 14.1, "Done for the day", "Lunch"]],
+["Seventh Period", [14.2, 15.36, "Done for the day", "PE"]]
+]);
+
+var wedFri_schedule = new Map([
+["Second Period", [8.10, 9.44, "Supp. Lab", "Bio"]],
+["Passing Period", [9.45, 9.48, "Passing Period", "Passing Period"]],
+["Advisory", [9.49, 10.29, "Advisory", "Advisory"]],
+["Break", [10.30, 10.43, "Break", "Break"]],
+["Fourth Period", [10.44, 12.18, "Art", "Math"]],
+["Lunch", [12.19, 13.7, "Done for the day", "Done for the day"]],
+["Sixth Period", [13.8, 14.42, "Done for the day", "Done for the day"]]
+]);
+
+function checkDay(values, key) {
+	var date=new Date();
+	var time=date.toLocaleTimeString();
+	var min=date.getMinutes();
+	var hrs=date.getHours();
+	if(hrs == '0') {hrs = 24};
+	var current_time = hrs+"."+min;
+	if (current_time > values[0] && current_time < values[1]) {
+     		var Period = key;
+		var BoyClass = "The Boy: " + values[2];
+		var GirlClass = "The Girl: " + values[3];
+		console.log("Period: " + Period);
+		console.log("BoyClass: " + BoyClass);
+		console.log("GirlClass: " + GirlClass);
+		document.getElementById("theAHSPeriod").innerHTML=Period;
+		document.getElementById("BoyCurrentClass").innerHTML=BoyClass;
+		document.getElementById("GirlCurrentClass").innerHTML=GirlClass;
+	};
+
+};
+
+function whereAreThey() {
+    	var date=new Date();
+	var time=date.toLocaleTimeString();
+	var min=date.getMinutes();
+	var hrs=date.getHours();
+	if(hrs == '0') {hrs = 24};
+	var current_time = hrs+"."+min;
+	var curr_day_num = date.getDay();
+	console.log("current_time: " + current_time);
+	console.log("current_day_num: " + curr_day_num);
+  	if (curr_day_num == 1) {
+		if ((current_time < 8.10) || (current_time > 15.32)) {
+			document.getElementById("theAHSPeriod").innerHTML="school isn't in session"; 
+			document.getElementById("BoyCurrentClass").innerHTML="wherever";
+			document.getElementById("GirlCurrentClass").innerHTML="wherever";
+		} else {			
+	        monday_schedule.forEach(checkDay);
+		};
+    } else if ((curr_day_num == 2) || (curr_day_num == 4)) {
+		if ((current_time < 8.10) || (current_time > 15.36)) {
+			document.getElementById("theAHSPeriod").innerHTML="school isn't in session"; 
+			document.getElementById("BoyCurrentClass").innerHTML="wherever";
+			document.getElementById("GirlCurrentClass").innerHTML="wherever";
+		} else {
+	        tuesThur_schedule.forEach(checkDay);
+		};
+    } else if ((curr_day_num == 3) || (curr_day_num == 5)) {
+		if ((current_time < 8.10) || (current_time > 14.42)) {
+			document.getElementById("theAHSPeriod").innerHTML="school isn't in session"; 
+			document.getElementById("BoyCurrentClass").innerHTML="wherever";
+			document.getElementById("GirlCurrentClass").innerHTML="wherever";
+		} else {
+	       wedFri_schedule.forEach(checkDay);
+		};
+    } else {
+	document.getElementById("theAHSPeriod").innerHTML="it's the weekend"; 
+	document.getElementById("BoyCurrentClass").innerHTML="wherever";
+	document.getElementById("GirlCurrentClass").innerHTML="wherever";
+    };
+};
+
+</script>
+
+<script>
+var display=setInterval(function(){Day()},0);
+
+function Day()
+{
+var date=new Date();
+var d_names = ["Sunday","Monday", "Tuesday", "Wednesday", 
+"Thursday", "Friday", "Saturday"];
+var curr_day_num = date.getDay();
+var curr_day = d_names[curr_day_num];
+document.getElementById("theDay").innerHTML=curr_day;
+}
+</script>
+
+</body>
+
+</html>  
